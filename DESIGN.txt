@@ -1,0 +1,239 @@
+
+(... eagerly awaiting the DW stamp of approval)
+
+# Command Line Set: The Sequel
+Zicheng Zhen and Sarah Yoon
+
+<!--- ================================================================= --->
+## Description
+This is a continuation of our APCS1 project: Command Line Set. Set is a 
+multiplayer card game played with a custom deck of 81 Set cards. Each card 
+has 4 attributes (color, shape, number and shading). Each attribute has 
+three different versions:
+
+      color: red, blue, green
+      shape: O, S, X
+      number: 1, 2, 3 
+      shading: {}, [], ()
+      an example card: {XX} // color will be added using ANSI escape codes
+
+The goal of the game is to find as many Sets as possible. A set is a group of 
+three cards such that, for any given attribute, the three cards share the 
+same variation of that attribute, or the cards all have different variations
+of that attribute. 
+      
+      an example set: {X}, [XX], (XXX) // colors are all the same
+      	 	      (same color and shape, different shading and number)
+
+The key difference between this project and our APCS1 project will be the 
+incorporation of a multiplayer feature using networking. A restraint of our
+original project was that only one player could access the game at one time,
+and multiple scores could not be kept for multiple players. By using sockets, 
+we seek to remedy this. 
+
+We plan to implement our original game of set in C, using C constructs before 
+implementing networking to allow for multiplayer Set. We will host two game 
+modes: classic, where the user plays a classic game of Set with no time and
+score restrictions; and time attack, where the user will receive a score based 
+on the speed at which he or she finds a set. These scores will then be saved
+in a high scores file, which can be viewed from inside the program and from
+the file. The user will also be given the option to play a tutorial.
+
+Set on Wikipedia: https://en.wikipedia.org/wiki/Set_(game)
+
+<!--- ================================================================= --->
+## User Interface
+
+The game will be text-based and played on a terminal window. A standard 80x24
+terminal window is optimal, although larger terminals will not suffer from 
+visual glitches. Upon running the file, the user will something like the
+following: 
+
+
+<!--- ----------------------------------------------------------------- --->
+   d888888o.   8 8888888888 8888888 8888888888
+ .`8888:' `88. 8 8888             8 8888
+ 8.`8888.   Y8 8 8888             8 8888
+ `8.`8888.     8 8888             8 8888
+  `8.`8888.    8 888888888888     8 8888
+   `8.`8888.   8 8888             8 8888
+    `8.`8888.  8 8888             8 8888
+8b   `8.`8888. 8 8888             8 8888
+`8b.  ;8.`8888 8 8888             8 8888
+ `Y8888P ,88P' 8 888888888888     8 8888
+
+Choose an option:
+       0. Play (Solo)
+       1. Play (Multiplayer)
+       2. Instructions
+       3. About
+       4. Highscores
+       5. Quit
+                               Fig. 1 - Home
+<!--- ----------------------------------------------------------------- --->
+
+Here, the program will solicit input from the user in order to determine what
+to do. Instructions will give the user a tutorial; About will give a brief 
+description of the project; Highscores will display the highscores; Quit will
+exit the program; Play (Solo) will prompt the user for a game mode and allow 
+the user to begin a game of set. Play (Multiplayer) will allow the user to 
+view a list of open games and give the user a choice between joining an open
+game or creating a new one. Games will continue until no sets are possible, at
+which point each player's score will be displayed, and the room destroyed. 
+
+Gameplay will consist of a user entering text coordinates to select a Set from
+the board. The program will check if the set is valid, and then either remove 
+the set (if it is valid) or inform the user that the set is not correct. If 
+there are no sets remaining, the program will deal cards out until a set 
+exists. There will be a maximum of 21 cards on the field at any given time. 
+The user may draw at any given time. 
+
+An example of the gameplay screen is shown below:
+
+<!--- ----------------------------------------------------------------- --->
+      0         1         2         
+A     [O]       [X]       {O}{O}    
+B     {X}       [S]       (S)(S)    
+C     (X)       [S][S]    [X]       
+
+Please choose three cards: 
+a0 b1 c2
+Booyah!
+	0         1         2         
+A	[X]       {O}{O}    (X)(X)(X) 
+B	{X}       (S)(S)    [O][O]    
+C	(X)       [S][S]    [O]       
+
+No possible sets: drawing...
+   0         1         2         3         
+A  [X]       {O}{O}    (X)(X)(X) {X}{X}    
+B  {X}       (S)(S)    [O][O]    {X}{X}    
+C  (X)       [S][S]    [O]       {S}       
+
+Please choose three cards: 
+                             Fig. 2 - Gameplay
+<!--- ----------------------------------------------------------------- --->
+
+The user will continue to play until he or she decides to quit, at which 
+point the user will be prompted to enter a username to save his or her 
+highscore. The highscore will be saved to a file. 
+
+<!--- ================================================================= --->
+## Technical Design
+
+### Project Topics
+This project will feature heavy usage of memory allocation in order to save, 
+shuffle and deal the deck of cards. We will be using a struct to store the
+different attributes of a card.
+
+In order to ensure that memory is freed whenever a user exits a game, we will
+make use of signal handling to allow for the user to save a highscore even 
+when quitting using ^C. 
+
+We will need to access, create and edit files in order to properly store the
+highscores. Reading from the file will be necessary to sort the highscores by
+score. Stat may be used to improve file i/o. 
+
+In multiplayer, if multiple users are trying to check sets at the same time, a
+semaphore will be used to allow access to the cards; thus, if one person has a
+set and submits it, but then another person submits it while the first person 
+is checking the set, the second person will have his or her checking delayed
+until the program finishes running for the first person. 
+
+We will likely not use many processes work for this project; however, we may 
+use it to establish connections between computers, or for local multiplayer if
+we have the time to implement it. Our main priority is to ensure the smooth
+functioning of the single player experience.
+
+### Data Structures & Algorithms
+We will have heavy use of arrays and structs in our project in order to 
+properly display the board and shuffle the deck of cards. We may have a
+linked list structure in order to facilitate the drawing of cards, while 
+shuffling will be done in an array. 
+
+Multiple loops of simple index switching will generate enough entropy to 
+create a random shuffle. Each game will be randomly seeded in order to 
+ensure randomness. The algorithm we will use to check whether a set exists 
+will test all possible triples. It runs with O(n^3) time complexity and 
+O(1) space complexity, but because we have a low amount of cards (21 max), 
+the large time complexity is negligible for this project. 
+
+### Task Distribution
+#### Phase 1: Single Player Mode
+Sarah - Create display and visuals
+      - Create card struct
+      - Create function to check if three cards are a set
+
+Zicheng - Create deck storage
+	- Create dealing mechanism
+	- Create highscores
+
+Both - Verify each file works properly
+     - Create basic gameplay
+     - Translate code from Java to C (from the original project)
+     - Debug 
+
+#### Phase 2: Multiplayer Mode
+Sarah - Streamline multiplayer functionality
+
+Zicheng - Work with semaphores
+
+Both - Work on networking
+     - Ensure all files work
+     - Debug and polish
+
+<!--- ================================================================= --->
+## Development Roadmap
+
+Saturday, January 7
+- Create skeletons
+- Begin code migration from Java to C
+
+Monday, January 9
+- Create working main interface
+- Begin adding function to instructions
+
+Tuesday, January 10
+- Add user input solicitation 
+- Create interface for play mode (single player)
+
+Wednesday, January 11
+- Add card dealing mechanism
+- Add cards to play mode interface
+
+Thursday, January 12
+- Add set verification
+- Add drawing mechanism
+- Add quitting mechanism
+- Polish user input
+
+Friday, January 13
+- Add algorithm for determining whether a set exists
+- Add win condition
+- Add rudimentary score display
+
+Monday, January 16
+- Create mechanism for creating and writing to a highscores file
+- Add highscore writing
+- Add scoring mechanism for sprint mode
+- END OF PHASE 1
+
+Tuesday, January 17
+- Begin work on networking
+- Create interface for hosting and joining rooms
+
+Wednesday, January 18
+- Add method to join and quit a room
+- Add networking to solicit input from multiple devices
+
+Thursdsay, January 19
+- Add mechanism for soliciting input from multiple users 
+- Create mechanism of scoring for multiplayer games
+- Debug and polish networking 
+
+Friday, January 20
+- Add semaphore control for networking
+
+Monday, January 23
+- Testing, debugging, polishing and finishing!
+- END OF PHASE 2
