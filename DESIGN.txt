@@ -25,19 +25,21 @@ of that attribute.
       an example set: {X}, [XX], (XXX) // colors are all the same
       	 	      (same color and shape, different shading and number)
 
-The key difference between this project and our APCS1 project will be the 
-incorporation of a multiplayer feature using networking. A restraint of our
-original project was that only one player could access the game at one time,
-and multiple scores could not be kept for multiple players. By using sockets, 
-we seek to remedy this. 
+In this version, two game modes would be hosted, but this time the modes would
+be Solo or Multiplayer. Solo would be the equivalent of last year's time attack,
+and the multiplayer feature would be incorporated using networking. A restraint
+of our original project was that only one player could access the game at any
+given time, and multiple scores could not be kept for multiple players. By using
+sockets, we seek to remedy this.
 
-We plan to implement our original game of set in C, using C constructs before 
-implementing networking to allow for multiplayer Set. We will host two game 
-modes: classic, where the user plays a classic game of Set with no time and
-score restrictions; and time attack, where the user will receive a score based 
-on the speed at which he or she finds a set. These scores will then be saved
-in a high scores file, which can be viewed from inside the program and from
-the file. The user will also be given the option to play a tutorial.
+The way Multiplayer will work will be more like the actual game - essentially, 
+rather than racing against the clock, players will race against each other. 
+"Cards" will be placed on the "table," and players will take Sets off the table
+as they find them until there are no cards left (i.e., if you call a Set first,
+you take it). The results for a multiplayer game would be the players' ranks
+based on the number of Sets collected by each player. These results would not
+be recorded.
+
 
 Set on Wikipedia: https://en.wikipedia.org/wiki/Set_(game)
 
@@ -114,9 +116,12 @@ Please choose three cards:
                              Fig. 2 - Gameplay
 <!--- ----------------------------------------------------------------- --->
 
-The user will continue to play until he or she decides to quit, at which 
+(Solo) The user will continue to play until they decide to quit, at which 
 point the user will be prompted to enter a username to save his or her 
 highscore. The highscore will be saved to a file. 
+
+(Multiplayer) Players remaining in a game at the game's end will be shown
+the rankings, but these results will not be saved.
 
 <!--- ================================================================= --->
 ## Technical Design
