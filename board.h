@@ -1,3 +1,6 @@
+#ifndef BOARD
+#define BOARD
+
 // ============================================
 // Board Header File
 // ============================================ 
@@ -6,11 +9,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define RED "\x1B[31m"
+#define GRN "\x1B[32m"
+#define BLU "\x1B[34m"
+
 struct card {
-  char shape;
-  char shading;
-  int number;
-  int color;
+  char shape; // 'O', 'X', or 'S'
+  char * shading; // "{ }", "[ ]", or "( )"
+  int number; // 1, 2, or 3
+  char * color; // RED, GRN, or BLU
 };
 typedef struct card card;
 
@@ -26,3 +33,5 @@ int shuffle(deck d);
 int deal(deck d); // EDIT
 int check_set(card c1, card c2, card c3);
 int remove_card(deck d);
+
+#endif
