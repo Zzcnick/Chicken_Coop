@@ -31,18 +31,55 @@ char * ctos(card c) {
   return ret;
 }
 
+void print_card(card c) {
+  printf("%s\n\n", ctos(c));
+}
 
+void print_deck(deck d) {
+  int i;
+  for (i = 0; i < d.pointer; i++) {
+    print_card(d.order[i]);
+  }
+}
+
+int populate(deck * d) {
+  int i;
+  for (i = 0; i < 81; i++) {
+    card c;
+    if (i % 3 == 0) c.shape = 'O';
+    if (i % 3 == 1) c.shape = 'S';
+    if (i % 3 == 2) c.shape = 'X';
+    if ((i/3) % 3 == 0) c.shading = "{}";
+    if ((i/3) % 3 == 1) c.shading = "[]";
+    if ((i/3) % 3 == 2) c.shading = "()";
+    c.number = ((i/9) % 3 == 0);
+    if ((i/27) % 3 == 0) c.color = RED;
+    if ((i/27) % 3 == 0) c.color = GRN;
+    if ((i/27) % 3 == 0) c.color = BLU;
+    //    sprintf(c.display, "%d\n", i);
+    //c.display = "!!!";
+    d->order[i] = c;
+  }
+  d->pointer = 81; // Number Of Cards Remaining
+  return 0;
+}
+
+//int populate(deck d);
+//int shuffle(deck d);
+//int deal(deck d); // EDIT
+//int check_set(card c1, card c2, card c3);
+//int remove_card(deck d);
+//void print_deck(deck d)
 
 int main() {
 
   card kinbote = { "X", "[]", 2, GRN };
-  printf("%s",ctos(kinbote));
-
-  printf("\t");
+  print_card(kinbote);
   
   card shade = { "S", "{}", 3, BLU };
-  printf("%s",ctos(shade));
-
+  print_card(shade);
+  
   printf("\n");
+
   return 0;
 }
