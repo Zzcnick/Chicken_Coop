@@ -12,12 +12,13 @@
 #define RED "\x1B[31m"
 #define GRN "\x1B[32m"
 #define BLU "\x1B[34m"
+#define WHT "\x1B[37m"
 
 struct card {
-  char shape; // 'O', 'X', or 'S'
-  char * shading; // "{ }", "[ ]", or "( )"
+  char * shape; // 'O', 'X', or 'S'
+  char * shading; // "{}", "[]", or "()"
   int number; // 1, 2, or 3
-  char * color; // RED, GRN, or BLU
+  char * color; // RED, GRN, or BLU  
 };
 typedef struct card card;
 
@@ -27,7 +28,7 @@ struct deck {
 }; 
 typedef struct deck deck;
 
-char * ctos(int color);
+char * ctos(card c);
 int populate(deck d);
 int shuffle(deck d);
 int deal(deck d); // EDIT
