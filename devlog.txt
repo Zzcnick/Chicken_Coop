@@ -1,0 +1,13 @@
+sarahY -- 2017-01-10 22:00ish
+NOTE - pardon lack of devlogging before this point, not much has really happened
+other than the design doc and the creation of skeleton files
+* wrote ctos(card c) - returns a string representing a Set card (from the given
+  card struct's attrs) including color ANSI escape code before and white ANSI
+  escape code after
+
+zichengZ -- 2017-01-10 22:00ish
+* wrote populate(deck * d) - takes pointer to struct deck and populates with 81
+  cards, so that for every attribute exactly a third of the deck has one of the
+  three possible values (thus every card is a unique combination of attributes)
+* wrote print_card() and print_deck()
+
