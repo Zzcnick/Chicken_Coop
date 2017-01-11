@@ -32,7 +32,7 @@ char * ctos(card c) {
 }
 
 void print_card(card c) {
-  printf("%s\n\n", ctos(c));
+  printf("%s\t", ctos(c));
 }
 
 void print_deck(deck d) {

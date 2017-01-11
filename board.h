@@ -29,7 +29,7 @@ struct deck {
 typedef struct deck deck;
 
 char * ctos(card c);
-int populate(deck d);
+int populate(deck * d);
 int shuffle(deck d);
 int deal(deck d); // EDIT
 int check_set(card c1, card c2, card c3);
