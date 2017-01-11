@@ -56,8 +56,6 @@ int populate(deck * d) {
     if ((i/27) % 3 == 0) c.color = RED;
     if ((i/27) % 3 == 0) c.color = GRN;
     if ((i/27) % 3 == 0) c.color = BLU;
-    //    sprintf(c.display, "%d\n", i);
-    //c.display = "!!!";
     d->order[i] = c;
   }
   d->pointer = 81; // Number Of Cards Remaining
@@ -73,11 +71,9 @@ int populate(deck * d) {
 
 int main() {
 
-  card kinbote = { "X", "[]", 2, GRN };
-  print_card(kinbote);
-  
-  card shade = { "S", "{}", 3, BLU };
-  print_card(shade);
+  deck * duck;
+  populate(duck);
+  print_deck(*duck);
   
   printf("\n");
 
