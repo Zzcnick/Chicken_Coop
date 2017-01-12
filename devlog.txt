@@ -11,3 +11,7 @@ zichengZ -- 2017-01-10 22:00ish
   three possible values (thus every card is a unique combination of attributes)
 * wrote print_card() and print_deck()
 
+zichengZ -- 2017-01-11 23:39
+* provide alternate solution to printing cards without ctos
+* restructure some code in board.h
+* ensure deck creation is working
