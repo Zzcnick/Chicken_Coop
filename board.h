@@ -28,12 +28,19 @@ struct deck {
 }; 
 typedef struct deck deck;
 
-void ctos(card c); // OBSOLETE
+struct board {
+  deck * pile;
+  card display[21];
+  int size;
+};
+typedef struct board board;
+
 int populate(deck * d);
 int shuffle(deck * d);
 int deal(deck * d); // EDIT
 int check_set(card c1, card c2, card c3);
 int remove_card(deck d);
+int set_exists(board b);
 void print_card(card c);
 void print_deck(deck d);
 void swap(deck * d, int i1, int i3);

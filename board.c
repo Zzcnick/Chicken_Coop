@@ -50,18 +50,13 @@ int populate(deck * d) {
 int shuffle(deck * d) {
   card tmp;
   swap(d, 0, 1);
-  
-  int i, i1, i2;
+    int i, i1, i2;
   int p = d->pointer;
   for (i = 0; i < p * 7; i++) {
     i1 = rand() % p;
     i2 = rand() % p;
     swap(d, i1, i2);
   }
-
-  //print_card(d->order[1]);
-  //printf("\n");
-
   return 0;
 }
 
@@ -70,6 +65,25 @@ void swap(deck * d, int i1, int i2) {
   tmp = d->order[i1];
   d->order[i1] = d->order[i2];
   d->order[i2] = tmp;
+}
+
+int set_exists(board b) {
+  if (b.size < 3) 
+    return -1;
+  int i, j, k;
+  for (i = 0; i < b.size - 2; i++) {
+    for (j = 1; j < b.size - 1; j++) {
+      for (k = 2; k < b.size; k++) {
+	if (check_set(b.display[i], b.display[j], b.display[k]))
+	  return -1;
+      }
+    }
+  }
+  return 0;
+}
+
+int check_set(card c1, card c2, card c3) {
+  return 0;
 }
 
 int main() {
@@ -93,57 +107,3 @@ int main() {
 
 // THE JUNKYARD OF OBSOLETE CODE
 // ==================================================
-// OBSOLETE 
-void ctos(card c) {
-
-  //return "hello";
-  /*
-  char cardstr[256];
-  strcpy(cardstr, "hello");
-  printf("%s\n", cardstr);
-  c->display = cardstr;
-  return c->display;
-*/
-  /*
-  strcpy(cardstr, c->color); // change color
-  strcat(cardstr, c->shading); // opening bracket and closing bracket
-
-  int l = strlen(cardstr) - 1;
-  int i;
-  //for (i = 0; i < c->number; i++) {
-  //cardstr[l] = c->shape; // will overwrite closing bracket on first iteration
-  //l++;
-  //}
-  //cardstr[l] = 0; // null terminate
-  //strcat(cardstr, c->shading+1); // closing bracket
-  strcat(cardstr, WHT); // change color back to white
-  printf("%s\n", cardstr);
-  cardstr[10] = 0;
-
-  c->display = cardstr;
-  printf("C Display inside ctos: %s\n", c->display);
-  return c->display;
-  */
-
-  /*
-  char firstbracket[4];
-  strcpy(firstbracket, c.shading);
-  firstbracket[1]='\0';
-  strcat(cardstr, firstbracket);
-  
-  int i;  
-  for (i=0; i<c.number; i++) {
-    strcat(cardstr, c.shape);
-  }
-
-  strcat(cardstr, &c.shading[1]);
-  
-  strcat(cardstr, WHT);
-
-  char *ret = (char*)malloc(strlen(cardstr)+1);
-  strcpy(ret, cardstr);
-
-  return ret;
-  */
-}
-

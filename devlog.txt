@@ -18,3 +18,7 @@ zichengZ -- 2017-01-11 23:39
 
 zichengZ -- 2017-01-12 22:09
 * add deck shuffling
+
+zichengZ -- 2017-01-13 10:54
+* begin work on displaying the board
+* create board struct
