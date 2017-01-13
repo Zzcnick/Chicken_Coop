@@ -47,10 +47,44 @@ int populate(deck * d) {
   return 0;
 }
 
+int shuffle(deck * d) {
+  card tmp;
+  swap(d, 0, 1);
+  
+  int i, i1, i2;
+  int p = d->pointer;
+  for (i = 0; i < p * 7; i++) {
+    i1 = rand() % p;
+    i2 = rand() % p;
+    swap(d, i1, i2);
+  }
+
+  //print_card(d->order[1]);
+  //printf("\n");
+
+  return 0;
+}
+
+void swap(deck * d, int i1, int i2) {
+  card tmp;
+  tmp = d->order[i1];
+  d->order[i1] = d->order[i2];
+  d->order[i2] = tmp;
+}
+
 int main() {
+  // Seeding Randomness
+  srand(time(0));
 
   deck duck;
   populate(&duck);
+
+  printf("Before Shuffling:\n");
+  print_deck(duck);
+  printf("\n");
+
+  printf("After Shuffling:\n");
+  shuffle(&duck);
   print_deck(duck);
   printf("\n");
 

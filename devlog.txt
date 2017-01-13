@@ -15,3 +15,6 @@ zichengZ -- 2017-01-11 23:39
 * provide alternate solution to printing cards without ctos
 * restructure some code in board.h
 * ensure deck creation is working
+
+zichengZ -- 2017-01-12 22:09
+* add deck shuffling

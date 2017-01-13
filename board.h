@@ -36,4 +36,5 @@ int check_set(card c1, card c2, card c3);
 int remove_card(deck d);
 void print_card(card c);
 void print_deck(deck d);
+void swap(deck * d, int i1, int i3);
 #endif
