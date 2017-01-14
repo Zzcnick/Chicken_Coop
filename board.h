@@ -37,7 +37,7 @@ typedef struct board board;
 
 int populate(deck * d); //DONE
 int shuffle(deck * d); //DONE
-int deal(deck * d); 
+void deal(deck * d, char row); 
 int check_attr(void *a, void *b, void *c); //DONE
 int check_set(card c1, card c2, card c3); //DONE
 int remove_card(deck d);

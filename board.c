@@ -27,6 +27,17 @@ void print_deck(deck d) {
   }
 }
 
+void deal(deck * d, char row) {
+  printf("%c\t", row);
+  int i=0;
+  for (i=1; i<4; i++) {
+    print_card(d->order[d->pointer-i]);
+  }
+  d->pointer-=3;
+  printf("\n");
+}
+  
+
 int populate(deck * d) {
   int i;
   card c;
@@ -102,22 +113,17 @@ int main() {
   deck duck;
   populate(&duck);
 
-  printf("Before Shuffling:\n");
-  print_deck(duck);
-  printf("\n");
-
-  printf("After Shuffling:\n");
   shuffle(&duck);
-  print_deck(duck);
-  printf("\n");  
+  printf("\t0\t1\t2\n");
 
-  card c1 = {'O', "[]", 1, RED};
-  card c2 = {'X', "[]", 1, GRN};
-  card c3 = {'S', "[]", 1, BLU};
-
-  int isSet = check_set(c1, c2, c3);
-  if (isSet) { printf("true\n"); } else { printf("false\n"); }
-  
+  deal(&duck, 'A');
+  deal(&duck, 'B');
+  deal(&duck, 'C');
+  deal(&duck, 'D');
+  deal(&duck, 'E');
+  deal(&duck, 'F');
+  deal(&duck, 'G');
+   
   return 0;
 }
 
