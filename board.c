@@ -82,8 +82,17 @@ int set_exists(board b) {
   return 0;
 }
 
+int check_attr(void *a, void *b, void *c) {
+  return (a==b && b==c) || ((a!=b) && (b!=c) && (c!=a));
+}
+
+
 int check_set(card c1, card c2, card c3) {
-  return 0;
+  int checkNums = check_attr(c1.number, c2.number, c3.number);
+  int checkShapes = check_attr(c1.shape, c2.shape, c3.shape);
+  int checkColors = check_attr(c1.color, c2.color, c3.color);
+  int checkShadings = check_attr(c1.shading, c2.shading, c3.shading);    
+  return checkNums && checkShapes && checkColors && checkShadings;
 }
 
 int main() {
@@ -100,8 +109,15 @@ int main() {
   printf("After Shuffling:\n");
   shuffle(&duck);
   print_deck(duck);
-  printf("\n");
+  printf("\n");  
 
+  card c1 = {'O', "[]", 1, RED};
+  card c2 = {'X', "[]", 1, GRN};
+  card c3 = {'S', "[]", 1, BLU};
+
+  int isSet = check_set(c1, c2, c3);
+  if (isSet) { printf("true\n"); } else { printf("false\n"); }
+  
   return 0;
 }
 
