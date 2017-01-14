@@ -1,18 +1,17 @@
-board.o: board.c board.h
-	gcc -c board.c
+GCC = gcc -g
 
-highscore.o: highscore.c highscore.h
-	gcc -c highscore.c
+all: board.o set.o
+	$(GCC) board.o set.o -o stest
+
+board.o: board.c board.h
+	$(GCC) -c board.c
 
 set.o: set.c set.h
-	gcc -c set.c
-
-board: board.o
-	gcc -o board board.o
+	$(GCC) -c set.c
 
 clean:
 	rm *.o
 	rm *~
 
-run: board
-	./board
+run: all
+	./stest
