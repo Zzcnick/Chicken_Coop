@@ -6,7 +6,7 @@ all: board.o set.o
 board.o: board.c board.h
 	$(GCC) -c board.c
 
-set.o: set.c set.h
+set.o: set.c board.c
 	$(GCC) -c set.c
 
 clean:
