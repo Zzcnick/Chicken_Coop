@@ -38,4 +38,5 @@ int remove_set(deck * d, int r1, int c1, int r2, int c2, int r3, int c3); //DONE
 void print_card(card c); //DONE
 void swap(deck * d, int i1, int i3); //DONE
 void display(deck d); //DONE
+int setexists(deck d); 
 #endif

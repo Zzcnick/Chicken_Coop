@@ -118,5 +118,52 @@ int check_set(card c1, card c2, card c3) {
   return checkNums && checkShapes && checkColors && checkShadings;
 }
 
+int set_exists(deck d) {
+  int a;
+  card board[21];
+  int size = 0;
+  for (a=d.dealt; a<d.removed; a++) {
+    board[a-d.dealt] = d.order[a];
+    size++;
+  }
+  if (size < 3) {
+    return -1;
+  }
+  int i, j, k;
+  for (i=0; i<size-2; i++) {
+    for (j=1; j<size-1; j++) {
+      for (k=2; k<size; k++) {
+	if (check_set(board[i], board[j], board[k])) {
+	  return 0;
+	}
+      }
+    }
+  }
+  return -1;
+}
+
+int main() {
+  srand(time(0));
+  deck duck;
+  populate(&duck);
+  shuffle(&duck);
+  int i;
+  for(i=0; i<4; i++) {
+    deal(&duck);
+  }
+  display(duck);
+  if (set_exists(duck)) {
+    printf("Set exists already, not going to deal!\n");
+  }
+  else {
+    printf("There are no Sets, dealing...\n");
+    deal(&duck);
+  }
+  display(duck);
+}
+  
+      
+  
+
 
 
