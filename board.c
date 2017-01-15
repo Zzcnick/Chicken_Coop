@@ -142,25 +142,7 @@ int set_exists(deck d) {
   return -1;
 }
 
-int main() {
-  srand(time(0));
-  deck duck;
-  populate(&duck);
-  shuffle(&duck);
-  int i;
-  for(i=0; i<4; i++) {
-    deal(&duck);
-  }
-  display(duck);
-  if (set_exists(duck)) {
-    printf("Set exists already, not going to deal!\n");
-  }
-  else {
-    printf("There are no Sets, dealing...\n");
-    deal(&duck);
-  }
-  display(duck);
-}
+
   
       
   
