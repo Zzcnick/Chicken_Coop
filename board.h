@@ -34,9 +34,9 @@ int shuffle(deck * d); //DONE
 int deal(deck * d); //DONE
 int check_attr(void *a, void *b, void *c); //DONE
 int check_set(card c1, card c2, card c3); //DONE
-int remove_set(deck * d, int r1, int c1, int r2, int c2, int r3, int c3); //DONE
+int remove_set(deck * d, int index1, int index2, int index3); //DONE
 void print_card(card c); //DONE
 void swap(deck * d, int i1, int i3); //DONE
 void display(deck d); //DONE
-int setexists(deck d); 
+int set_exists(deck d); 
 #endif

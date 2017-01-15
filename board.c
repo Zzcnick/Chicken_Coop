@@ -19,20 +19,17 @@ void print_card(card c) {
 }
 
 int deal(deck * d) {
-  if (d->removed - d->dealt < 21) {    
+  if (d->removed - d->dealt < 21) {
+    if (d->dealt == 0) {
+      return 1;
+    }
     d->dealt-=3;
     return 0;
   }
   return -1;
 }
 
-int remove_set(deck * d, int r1, int c1, int r2, int c2, int r3, int c3) {
-  int offset = d->dealt;
-
-  int index1 = (r1+1)*(c1+1)-1+offset;
-  int index2 = (r2+1)*(c2+1)-1+offset;
-  int index3 = (r3+1)*(c3+1)-1+offset;
-
+int remove_set(deck * d, int index1, int index2, int index3) {
   int toswap1 = d->removed - 3;
   int toswap2 = d->removed - 2;
   int toswap3 = d->removed - 1;
@@ -60,6 +57,7 @@ void display(deck d) {
       printf("\n");
     }
   }
+  printf("\n");
 }
 
 int populate(deck * d) {
@@ -131,8 +129,8 @@ int set_exists(deck d) {
   }
   int i, j, k;
   for (i=0; i<size-2; i++) {
-    for (j=1; j<size-1; j++) {
-      for (k=2; k<size; k++) {
+    for (j=i+1; j<size-1; j++) {
+      for (k=i+2; k<size; k++) {
 	if (check_set(board[i], board[j], board[k])) {
 	  return 0;
 	}
