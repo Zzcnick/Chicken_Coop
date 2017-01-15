@@ -22,3 +22,36 @@ zichengZ -- 2017-01-12 22:09
 zichengZ -- 2017-01-13 10:54
 * begin work on displaying the board
 * create board struct
+
+sarahY 2017-01-15 1:13
+* Most of Phase I working, meaning
+   * The way deal(deck * d) works now is that the struct deck has two pointers,
+     one being the index past which all the cards have been dealt, and the other
+     being the index past which all the cards have been removed. deal(deck * d)
+     shifts the former to the left by 3 given that there are fewer than 21 cards on
+     the table already (if there are more, the function returns -1) and that there
+     are still cards left to be dealt (if there aren't, the function returns 1).
+     If the operation is successful, the function returns 0.
+   * remove_card has been replaced with remove_set, which takes a pointer to a
+     deck and three integer indices. The cards with these indices are swapped
+     with three cards at the end of the section of cards that have been dealt
+     but not removed. The removed pointer is then decremented.
+   * display(deck d) has been added, print_deck(deck) has been removed.
+   * check_attr(void *a, void *b, void *c) and check_set(card c1, card c2, card c3)
+     have been added. check_set(...) returns 0 if the cards don't make a set.
+   * set_exists(deck d) has been rewritten, since the struct board has been
+     removed
+   * set.c now has the function parse(deck * d, char *input) which takes a str
+     in the form "A1 B2 C0" and either "BOOYAH!"s and removes the set or
+     is condescending if the user's input is not a set.
+   * The main function uses fgets to get the user's preferred username, and to
+     get the user's input once the game starts. For each iteration cards are
+     dealt if the number of cards on the table is less than 9 (the deal function
+     won't do anything if there are not enough cards to do this) and also if
+     there are no sets on the table. The user's input gets parsed unless the
+     user enters "exit," in which case the program is terminated.
+* For Single Player to be complete we still need a timing and a scoring
+  mechanism.
+* I haven't tested all the way to the end of a game so I haven't tested for
+  end-of-game cases.
+WOOOO SO MUCH PROGRESS OMG!!!!!
