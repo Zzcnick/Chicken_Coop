@@ -24,25 +24,18 @@ typedef struct card card;
 
 struct deck {
   card order[81];
-  int pointer;
+  int dealt;
+  int removed;
 }; 
 typedef struct deck deck;
 
-struct board {
-  deck * pile;
-  card display[21];
-  int size;
-};
-typedef struct board board;
-
 int populate(deck * d); //DONE
 int shuffle(deck * d); //DONE
-void deal(deck * d, char row); 
+int deal(deck * d); //DONE
 int check_attr(void *a, void *b, void *c); //DONE
 int check_set(card c1, card c2, card c3); //DONE
-int remove_card(deck d);
-int set_exists(board b); //DONE
+int remove_set(deck * d, int r1, int c1, int r2, int c2, int r3, int c3); //DONE
 void print_card(card c); //DONE
-void print_deck(deck d); //DONE
-void swap(deck * d, int i1, int i3); //DONE 
+void swap(deck * d, int i1, int i3); //DONE
+void display(deck d); //DONE
 #endif
