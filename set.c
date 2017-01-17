@@ -61,9 +61,10 @@ int main() {
     
     printf("Please enter a Set.\n");
     printf("%s: ", user);
-    char input[10];
+    char input[1024];
     fgets(input, sizeof(input), stdin);
     *strchr(input, '\n') = 0;
+    printf("\e[1;1H\e[2J"); // Clears Terminal
     if (strcmp(input, "exit") == 0) {
       exit(0);
     }    

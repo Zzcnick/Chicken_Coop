@@ -10,8 +10,7 @@ set.o: set.c board.c
 	$(GCC) -c set.c
 
 clean:
-	rm *.o
-	rm *~
+	rm *.o *~
 
 run: all
 	./stest

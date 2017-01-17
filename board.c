@@ -13,7 +13,7 @@ void print_card(card c) {
   printf("%c", c.shading[0]);
   int i;
   for (i = 0; i < c.number; i++)
-    printf("%c", c.shape);
+    printf("%s", c.shape);
   printf("%c", c.shading[1]);
   printf("%s\t", WHT);
 }
@@ -64,9 +64,9 @@ int populate(deck * d) {
   int i;
   card c;
   for (i = 0; i < 81; i++) {
-    if (i % 3 == 0) c.shape = 'O';
-    if (i % 3 == 1) c.shape = 'S';
-    if (i % 3 == 2) c.shape = 'X';
+    if (i % 3 == 0) c.shape = "O";
+    if (i % 3 == 1) c.shape = "S";
+    if (i % 3 == 2) c.shape = "X";
     if ((i/3) % 3 == 0) c.shading = "{}";
     if ((i/3) % 3 == 1) c.shading = "[]";
     if ((i/3) % 3 == 2) c.shading = "()";
@@ -76,8 +76,10 @@ int populate(deck * d) {
     if ((i/27) % 3 == 2) c.color = BLU;
     d->order[i] = c;
   }
-  d->dealt = 81;
-  d->removed = 81;
+  d->dealt = 81; // Index of cards that have been dealt
+  d->removed = 81; // Index of cards that have been removed
+  // |--------<DEALT>---------<REMOVED>---------|
+  // |  undealt  |   displayed    |     removed |
   return 0;
 }
 
@@ -101,18 +103,18 @@ void swap(deck * d, int i1, int i2) {
   d->order[i2] = tmp;
 }
 
-
-
 int check_attr(void *a, void *b, void *c) {
   return (a==b && b==c) || ((a!=b) && (b!=c) && (c!=a));
 }
-
+int check_attr_nums(int a, int b, int c) {
+  return (a==b && b==c) || ((a!=b) && (b!=c) && (c!=a));
+}
 
 int check_set(card c1, card c2, card c3) {
-  int checkNums = check_attr(c1.number, c2.number, c3.number);
-  int checkShapes = check_attr(c1.shape, c2.shape, c3.shape);
-  int checkColors = check_attr(c1.color, c2.color, c3.color);
-  int checkShadings = check_attr(c1.shading, c2.shading, c3.shading);    
+  int checkNums = check_attr_nums(c1.number, c2.number, c3.number);
+  int checkShapes = check_attr((void *)c1.shape, (void *)c2.shape, (void *)c3.shape);
+  int checkColors = check_attr((void *)c1.color, (void *)c2.color, (void *)c3.color);
+  int checkShadings = check_attr((void *)c1.shading, (void *)c2.shading, (void *)c3.shading);    
   return checkNums && checkShapes && checkColors && checkShadings;
 }
 
