@@ -23,7 +23,7 @@ zichengZ -- 2017-01-13 10:54
 * begin work on displaying the board
 * create board struct
 
-sarahY 2017-01-15 1:13
+sarahY -- 2017-01-15 1:13
 * Most of Phase I working, meaning
    * The way deal(deck * d) works now is that the struct deck has two pointers,
      one being the index past which all the cards have been dealt, and the other
@@ -55,3 +55,14 @@ sarahY 2017-01-15 1:13
 * I haven't tested all the way to the end of a game so I haven't tested for
   end-of-game cases.
 WOOOO SO MUCH PROGRESS OMG!!!!!
+
+zichengZ -- 2017-01-17 10:55
+- facts @ SO MUCH PROGRESS! 
+- add some quality of life improvements
+  - add helper function to remove void * warnings
+  - change shape to a char * to remove void * warnings
+  - add terminal clearing 
+
+zichengZ -- 2018-01-18 10:57
+- begin work on networking
+- start skeleton files
