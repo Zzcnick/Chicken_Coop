@@ -30,8 +30,25 @@ void parse(deck * d, char * input) {
     printf("If at first you don't succeed, try try again!\n");
   }
 }
-      
+  
+int c_connect() {
+  int sd = -1;
+  sd = socket( AF_INET, SOCK_STREAM, 0 );
+
+  struct sockaddr_in sin;
+  sin.sin_family = AF_INET;
+  inet_aton( "127.0.0.1", &(sin.sin_addr) );
+  sin.sin_port = htons(5375);
+
+  sd = connect( sd, (struct sockaddr_in *)sin, sizeof(sin) );
+
+  return sd;
+}
+    
 int main() {
+
+  return 0;
+  /* ============= SINGLE PLAYER ==============
   system("clear");
   srand(time(0));
   printf("SET 2.0\n");
@@ -75,4 +92,5 @@ int main() {
     }
   }    
   return 0;
+  ============================================ */
 }
