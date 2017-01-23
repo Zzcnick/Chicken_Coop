@@ -74,10 +74,10 @@ int main() {
     populate(&duck);
     shuffle(&duck);
     int secsToAdd = 0;
-    int times[27];
+    int times[3];
     int index = 0;
     
-    while (duck.removed > 0) {      
+    while (duck.removed > 72) {      
       while (duck.removed-duck.dealt < 9) {
 	deal(&duck);
       }
@@ -121,11 +121,19 @@ int main() {
       }
     }
     double score;
-    for (index=0; index<27; index++) {
+    for (index=0; index<3; index++) {
       score += (double)times[index];
     }
-    score = score/27;
+    score = score/3;
     printf("Thanks for playing! On average you took %lf seconds per Set.\n", score);
+
+    playerscore * list = read_scores("h.txt");
+    list = insert(list, user, score);
+    write_scores(list, "h.txt");
+    printf("\nScore rankings:\n");
+    printf("===============================\n");
+    print_scores("h.txt");
+    printf("\n");
   }
   else {
     printf("Sorry, but Multiplayer isn't working yet :(\n");

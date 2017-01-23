@@ -21,7 +21,7 @@ playerscore * insert_front( playerscore *l, char *u, double s );
 playerscore * insert( playerscore *l, char *u, double s );
 char * sprint_node( playerscore *n ); 
 void print_list( playerscore *l ); 
-void read_scores(char * filename);
-int write_scores( playerscore *l);
+playerscore * read_scores(char * filename);
+int write_scores( playerscore *l, char * filename);
 void print_scores(char * filename);
 #endif

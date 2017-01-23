@@ -52,14 +52,15 @@ void print_scores(char * filename) {
   fp = fopen(filename, "r");
   char line[1024];
   while (fgets(line, sizeof(line), (FILE *)fp) != NULL) {
-    printf("%s", line);
+    *strchr(line, '\n') = 0;
+    printf("%s seconds per Set\n", line);
   }
   fclose(fp);
 }
 
-int write_scores( playerscore *l) {
+int write_scores( playerscore *l, char * filename) {
   FILE *fp;
-  fp = fopen("highscores.txt", "w+");
+  fp = fopen(filename, "w+");
   char inputstr[256];
 
   playerscore *f = l;
@@ -75,17 +76,21 @@ int write_scores( playerscore *l) {
   return 0;
 }
 
-/* void print_scores() {
-}*/
-
-int main() {
-  playerscore * list = 0;
-  list = insert(list, "Sarah", 3.14);
-  list = insert(list, "Zicheng", 6.28);
-  list = insert(list, "Jan", 4.13);
-  list = insert(list, "Enver", 1.23);  
-  write_scores(list);
-  print_scores("highscores.txt");
-  free_scorelist(list);
-  return 0;
+playerscore * read_scores( char * filename ) {
+  FILE *fp;
+  fp = fopen(filename, "r");
+  playerscore *l = 0;
+  char line[1024];
+  char * sep = "\t\t";
+  while (fgets(line, sizeof(line), (FILE *)fp) != NULL) {
+    char * user = strtok(line, sep);
+    char * username = strdup(user);
+    char * scorestr = strtok(NULL, sep);
+    double score;
+    sscanf(scorestr, "%lf", &score);    
+    l = insert(l, username, score);
+  }
+  fclose(fp);
+  return l;
 }
+
