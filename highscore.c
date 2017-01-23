@@ -12,7 +12,6 @@ playerscore * free_scorelist( playerscore *l ) {
   while(l) {
     l = l->next;
     free(f);
-    printf("Be free!\n");
     f=l;
   }
   return l;
@@ -48,10 +47,15 @@ playerscore * insert( playerscore *l, char *u, double s ) {
   return l;
 }
 
-
-
-/*playerscore * read_scores() {  
-}*/
+void print_scores(char * filename) {
+  FILE *fp;
+  fp = fopen(filename, "r");
+  char line[1024];
+  while (fgets(line, sizeof(line), (FILE *)fp) != NULL) {
+    printf("%s", line);
+  }
+  fclose(fp);
+}
 
 int write_scores( playerscore *l) {
   FILE *fp;
@@ -81,7 +85,7 @@ int main() {
   list = insert(list, "Jan", 4.13);
   list = insert(list, "Enver", 1.23);  
   write_scores(list);
-  
+  print_scores("highscores.txt");
   free_scorelist(list);
   return 0;
 }
