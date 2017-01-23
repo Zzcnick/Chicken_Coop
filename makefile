@@ -9,6 +9,9 @@ board.o: board.c board.h
 set.o: set.c board.c
 	$(GCC) -c set.c
 
+setserver: setserver.c setserver.h
+	$(GCC) setserver.c -o server.out
+
 clean:
 	rm *.o *~
 
