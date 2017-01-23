@@ -73,7 +73,7 @@ int main() {
     deck duck;
     populate(&duck);
     shuffle(&duck);
-    int secsToAdd = 0;
+    double secsToAdd = 0.0;
     while (1) {
       while (duck.removed-duck.dealt < 9) {
 	deal(&duck);
@@ -89,7 +89,7 @@ int main() {
       printf("Please enter a Set.\n");
       printf("%s: ", user);
       time_t start_time, stop_time;
-      int elapsed;
+      double elapsed;
       start_time = time(NULL);
       char input[1024];
       fgets(input, sizeof(input), stdin);
@@ -103,14 +103,14 @@ int main() {
 	if (parse(&duck, input) == 0) {
 	  stop_time = time(NULL);
 	  elapsed = difftime(stop_time, start_time) + secsToAdd;
-	  printf("You took %d seconds.\n", elapsed);
+	  printf("You took %lf seconds.\n", elapsed);
 	  secsToAdd = 0;
 	}
 	else {
 	  stop_time = time(NULL);
 	  elapsed = difftime(stop_time, start_time);
 	  secsToAdd += elapsed;
-	  printf("Clock's ticking!\n");
+	  printf("Tick tock, maggot!\n");
 	}
 	printf("\n");
       }
