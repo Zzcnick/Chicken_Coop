@@ -7,5 +7,18 @@
 #include <string.h>
 #include <fcntl.h>
 
-int score_index(double score);
-int write_score(char * name, double score);
+typedef struct playerscore {
+  char *username;
+  double score;
+  struct playerscore *next;
+} playerscore;
+
+playerscore * free_scorelist( playerscore *l );
+playerscore * insert_front( playerscore *l, char *u, double s );
+playerscore * insert( playerscore *l, char *u, double s );
+void print_node( playerscore *n ); //temp
+void print_list( playerscore *l ); //temp
+playerscore * read_scores();
+int write_scores( playerscore *l);
+void print_scores();
+
