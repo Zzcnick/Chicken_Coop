@@ -12,6 +12,7 @@ playerscore * free_scorelist( playerscore *l ) {
   while(l) {
     l = l->next;
     free(f);
+    printf("Be free!\n");
     f=l;
   }
   return l;
@@ -70,12 +71,12 @@ void print_scores() {
 }*/
 
 int main() {
-  playerscore * list;
+  playerscore * list = 0;
   list = insert(list, "Sarah", 3.14);
   list = insert(list, "Zicheng", 6.28);
   list = insert(list, "Jan", 4.13);
   list = insert(list, "Enver", 1.23);
   print_list(list);
-  //free_scorelist(list);
+  free_scorelist(list);
   return 0;
 }
