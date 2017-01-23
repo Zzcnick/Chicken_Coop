@@ -67,7 +67,7 @@ zichengZ -- 2017-01-18 10:57
 - begin work on networking
 - start skeleton files
 
-sarahY -- 2017-01-23 4:55AM
+sarahY -- 2017-01-23 04:55
 - OKAY OKAY KNOCKING ON WOOD BUT I THINK SINGLE PLAYER IS DONE
 - So here is how highscore.c works now:
    - the struct playerscore is essentially a node in a linked list, with the
@@ -85,3 +85,9 @@ sarahY -- 2017-01-23 4:55AM
    - the score rankings are printed using print_scores on h.txt
    - slight modifications can be made in order to print up to 5 top scorers
 WOOOOOOOOOO PROGRESSSS
+
+zichengZ -- 2017-01-23 16:53
+- Complete networking framework and create setserver for implementation
+  - Use select to solicit input from stdin and server on both sides
+  - Verify connection between server and client exists on localhost
+- Begin implementation of setserver into set client

@@ -69,6 +69,7 @@ int main() {
   fgets(mode, sizeof(mode), stdin);
   *strchr(mode, '\n') = 0;
 
+  // SINGLE PLAYER MODE
   if (strcmp(mode, "1") == 0) {
     deck duck;
     populate(&duck);
@@ -136,8 +137,21 @@ int main() {
     free(list);
     printf("\n");
   }
-  else {
-    printf("Sorry, but Multiplayer isn't working yet :(\n");
+
+  // MULTIPLAYER MODE
+  else if (strcmp(mode, "2") == 0) {
+    printf("You have selected multiplayer!\n");
+    printf("Are you hosting or joining a room?\n\t1. Hosting\n\t2. Joining\n\nEnter a choice: ");
+    while (1) {
+      fgets(mode, sizeof(mode), stdin);
+      *strchr(mode, '\n') = 0;
+      if (strcmp(mode, "1") == 0) {
+	printf("1 selected");
+      }
+      else if (strcmp(mode, "2") == 0) {
+	printf("2 selected");
+      }
+    }
   }
   return 0;
 }
