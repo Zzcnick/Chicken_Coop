@@ -73,8 +73,11 @@ int main() {
     deck duck;
     populate(&duck);
     shuffle(&duck);
-    double secsToAdd = 0.0;
-    while (1) {
+    int secsToAdd = 0;
+    int times[27];
+    int index = 0;
+    
+    while (duck.removed > 0) {      
       while (duck.removed-duck.dealt < 9) {
 	deal(&duck);
       }
@@ -89,7 +92,7 @@ int main() {
       printf("Please enter a Set.\n");
       printf("%s: ", user);
       time_t start_time, stop_time;
-      double elapsed;
+      int elapsed;
       start_time = time(NULL);
       char input[1024];
       fgets(input, sizeof(input), stdin);
@@ -97,13 +100,15 @@ int main() {
       system("clear");
       if (strcmp(input, "exit") == 0) {
 	exit(0);
-      }    
+      }
       else {
 	printf("\n");
 	if (parse(&duck, input) == 0) {
 	  stop_time = time(NULL);
 	  elapsed = difftime(stop_time, start_time) + secsToAdd;
-	  printf("You took %lf seconds.\n", elapsed);
+	  printf("You took %d seconds.\n", elapsed);
+	  times[index] = elapsed;
+	  index++;
 	  secsToAdd = 0;
 	}
 	else {
@@ -115,8 +120,13 @@ int main() {
 	printf("\n");
       }
     }
+    double score;
+    for (index=0; index<27; index++) {
+      score += (double)times[index];
+    }
+    score = score/27;
+    printf("Thanks for playing! On average you took %lf seconds per Set.\n", score);
   }
-
   else {
     printf("Sorry, but Multiplayer isn't working yet :(\n");
   }
