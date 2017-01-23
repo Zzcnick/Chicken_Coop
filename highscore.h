@@ -1,3 +1,6 @@
+#ifndef HIGHSCORE
+#define HIGHSCORE
+
 // ============================================
 // Highscores Header File
 // ============================================ 
@@ -16,9 +19,9 @@ typedef struct playerscore {
 playerscore * free_scorelist( playerscore *l );
 playerscore * insert_front( playerscore *l, char *u, double s );
 playerscore * insert( playerscore *l, char *u, double s );
-void print_node( playerscore *n ); //temp
-void print_list( playerscore *l ); //temp
+char * sprint_node( playerscore *n ); 
+void print_list( playerscore *l ); 
 playerscore * read_scores();
 int write_scores( playerscore *l);
 void print_scores();
-
+#endif

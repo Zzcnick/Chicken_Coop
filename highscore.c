@@ -48,26 +48,30 @@ playerscore * insert( playerscore *l, char *u, double s ) {
   return l;
 }
 
-void print_node( playerscore *n ) {
-  if (n != 0) {
-    printf("%s\t\t%lf\n", n->username, n->score);
-  }  
-}
 
-void print_list( playerscore *l ) {
-  if (l) {
-    print_node(l);
-    print_list(l->next);
-  }
-}
 
-/*playerscore * read_scores() {
-}
+/*playerscore * read_scores() {  
+}*/
 
 int write_scores( playerscore *l) {
+  FILE *fp;
+  fp = fopen("highscores.txt", "w+");
+  char inputstr[256];
+
+  playerscore *f = l;
+  while (f!= 0) {
+    char temp[256];
+    sprintf(temp, "%s\t\t%lf\n", f->username, f->score);
+    strcat(inputstr, temp);    
+    f = f->next;
+  }
+  
+  fputs(inputstr, fp);
+  fclose(fp);
+  return 0;
 }
 
-void print_scores() {
+/* void print_scores() {
 }*/
 
 int main() {
@@ -75,8 +79,9 @@ int main() {
   list = insert(list, "Sarah", 3.14);
   list = insert(list, "Zicheng", 6.28);
   list = insert(list, "Jan", 4.13);
-  list = insert(list, "Enver", 1.23);
-  print_list(list);
+  list = insert(list, "Enver", 1.23);  
+  write_scores(list);
+  
   free_scorelist(list);
   return 0;
 }
