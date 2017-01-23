@@ -63,6 +63,25 @@ zichengZ -- 2017-01-17 10:55
   - change shape to a char * to remove void * warnings
   - add terminal clearing 
 
-zichengZ -- 2018-01-18 10:57
+zichengZ -- 2017-01-18 10:57
 - begin work on networking
 - start skeleton files
+
+sarahY -- 2017-01-23 4:55AM
+- OKAY OKAY KNOCKING ON WOOD BUT I THINK SINGLE PLAYER IS DONE
+- So here is how highscore.c works now:
+   - the struct playerscore is essentially a node in a linked list, with the
+     expected freeing and insertion functions.
+   - print_scores takes a filename (I've added the empty file h.txt for this)
+     and simply prints it out
+   - write_scores takes a playerscore linked list and a filename and overwrites
+     the given file with the linked list's info
+   - read_scores takes a filename and turns the info in the given file into a
+     playerscore list, which it returns
+- So in Single Player, the way scores get recorded is:
+   - a playerscore list is initialized as read_scores("h.txt")
+   - the new user and newly calculated score are inserted into this list
+   - h.txt is overwritten with this list using write_scores
+   - the score rankings are printed using print_scores on h.txt
+   - slight modifications can be made in order to print up to 5 top scorers
+WOOOOOOOOOO PROGRESSSS

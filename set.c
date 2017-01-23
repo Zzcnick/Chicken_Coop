@@ -133,6 +133,7 @@ int main() {
     printf("\nScore rankings:\n");
     printf("===============================\n");
     print_scores("h.txt");
+    free(list);
     printf("\n");
   }
   else {
