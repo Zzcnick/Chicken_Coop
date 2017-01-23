@@ -1,7 +1,7 @@
 GCC = gcc -g
 
 all: board.o set.o highscore.o
-	$(GCC) board.o set.o highscore.o -o stest
+	$(GCC) board.o set.o highscore.o -o stest.out
 
 board.o: board.c board.h
 	$(GCC) -c board.c
@@ -16,7 +16,7 @@ setserver: setserver.c setserver.h
 	$(GCC) setserver.c -o server.out
 
 clean:
-	rm *.o *~
+	rm *.o *~ *.out
 
 run: all
-	./stest
+	./stest.out

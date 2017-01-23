@@ -15,6 +15,9 @@
 #include "board.h"
 #include "setserver.h"
 
+#define STDIN STDIN_FILENO
+#define STDOUT STDOUT_FILENO 
+
 int parse(deck * d, char * input) {
   int r1, r2, r3;
   r1 = input[0]-65;
@@ -59,26 +62,50 @@ int c_connect() {
 }
     
 int main() {    
-  char buffer[128];
+  
 
   system("clear");
   srand(time(0));
   printf("SET 2.0\n");
   printf("By Sarah Yoon and Zicheng Zhen\n\n");
 
+  char rbuffer[128]; // Reading
+  char wbuffer[128]; // Writing
+  fd_set fds;
+  char * message = "Connected!\n";
+    
   int sd = c_connect();
   printf("sd: %d\n", sd);
 
-  while (1) {
-    printf("Send Message:\n");
+  while (sd > 0) {
+    printf("CLIENT>>> ");
+    fflush(stdout);
+    FD_ZERO(&fds);
+    FD_SET(STDIN, &fds);
+    FD_SET(sd, &fds);
+
+    select ( sd + 1, &fds, NULL, NULL, NULL );
+    
+    if (FD_ISSET(STDIN, &fds)) {
+      //printf("Received input from stdin!\n"); // Debugging
+      fgets( rbuffer, sizeof(rbuffer), stdin );
+      send( sd, rbuffer, sizeof(rbuffer), 0);
+      printf("%s\n", rbuffer);
+    }
+    if (FD_ISSET(sd, &fds)) {
+      recv(sd, rbuffer, sizeof(rbuffer), 0);
+      printf("%s\n", rbuffer);
+    }
+
+    /*
     fgets(buffer, sizeof(buffer), stdin);
     char * p = strchr(buffer, '\n');
     *p = 0;
 
     send( sd, buffer, sizeof(buffer), 0 );
     recv( sd, buffer, sizeof(buffer), 0 );
-    printf( "Received: %s\n", buffer );
-    
+    printf( "Received: %s\n", buffer );    
+    */
   }
 
   return 0;

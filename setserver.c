@@ -8,7 +8,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define STDIN 0
+#define STDIN STDIN_FILENO
+#define STDOUT STDOUT_FILENO
 
 int s_setup() {
   int sd = -1; // Socket Descriptor
@@ -44,16 +45,35 @@ int s_connect(int sd) {
   return connection;
 }
 
+int parse(char * buffer) {
+  if (strcmp(buffer, "add") == 0) {
+    printf("[SERVER] Adding connection...\n");
+
+    int sd;
+    sd = s_setup();
+    if (sd > -1) 
+      printf("Socket successfully created!\n");
+    sd = s_connect(sd);
+
+    return sd;
+  }
+  return -1;
+}
+
 int main() {
-  char buffer[128]; // Reading From Clients
+  char rbuffer[128]; // Reading From Clients
+  char wbuffer[128]; // Writing To Clients
   fd_set fds;
   char * message = "Connected!\n";
   int max_clients = 4;
+  int clients[max_clients];
+  int num_clients = 0;
   int max_sd;
   int i;
 
   // Initializing Client Sockets
-  //for (i = 0; i < max_clients; i++)
+  for (i = 0; i < max_clients; i++)
+    clients[i] = 0;
 
   int sd;
   sd = s_setup();
@@ -65,28 +85,32 @@ int main() {
   host = s_connect(sd);
   if (host > -1) {
     printf("Connection established to host!\n");
-  }
+  }  
 
   max_sd = host;
 
+  // Before Starting Game, Setting Up Room
+  printf("Host: %d\n", max_sd);
   while (1) {
+    printf("SERVER>>> ");
+    fflush(stdout);
     FD_ZERO(&fds);
     FD_SET(STDIN, &fds);
     FD_SET(host, &fds);
-    printf("Host: %d\n", max_sd);
-    printf("Selecting \n");
 
-    select( max_sd + 1, &fds, NULL, NULL, NULL);
+    select( max_sd + 1, &fds, NULL, NULL, NULL );
     
     if (FD_ISSET(STDIN, &fds)) {
-      printf("Received input from stdin!\n");
-      fgets( buffer, sizeof(buffer), stdin );
-      printf("[SERVER] %s\n", buffer);
+      //printf("Received input from stdin!\n"); // Debugging
+      fgets( rbuffer, sizeof(rbuffer), stdin );
+      printf("\n[SERVER STDIN] %s\n", rbuffer);
     }
     if (FD_ISSET(host, &fds)) {
-      printf("Received input from client!\n");
-      recv(host, buffer, sizeof(buffer), 0);
-      send(host, "Hello\n", 7, 0);
+      recv(host, rbuffer, sizeof(rbuffer), 0);
+      printf("\n[CLIENT %d] %s\n", host, rbuffer);
+      strcpy(wbuffer, "[SERVER] Received: ");
+      strcat(wbuffer, rbuffer);
+      send(host, wbuffer, sizeof(wbuffer), 0);
     }
   }
   
