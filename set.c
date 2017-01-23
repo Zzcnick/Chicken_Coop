@@ -4,9 +4,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "highscore.h"
 #include "board.h"
+#include <time.h>
 
 int parse(deck * d, char * input) {
   int r1, r2, r3;
@@ -73,6 +73,7 @@ int main() {
     deck duck;
     populate(&duck);
     shuffle(&duck);
+    int secsToAdd = 0;
     while (1) {
       while (duck.removed-duck.dealt < 9) {
 	deal(&duck);
@@ -86,8 +87,10 @@ int main() {
       }
     
       printf("Please enter a Set.\n");
-      clock_t start = clock(), diff;
       printf("%s: ", user);
+      time_t start_time, stop_time;
+      int elapsed;
+      start_time = time(NULL);
       char input[1024];
       fgets(input, sizeof(input), stdin);
       *strchr(input, '\n') = 0;
@@ -98,9 +101,16 @@ int main() {
       else {
 	printf("\n");
 	if (parse(&duck, input) == 0) {
-	  diff = clock() - start;
-	  double t = ((double)diff)/1000;
-	  printf("\nYou took %lf seconds!\n", t);
+	  stop_time = time(NULL);
+	  elapsed = difftime(stop_time, start_time) + secsToAdd;
+	  printf("You took %d seconds.\n", elapsed);
+	  secsToAdd = 0;
+	}
+	else {
+	  stop_time = time(NULL);
+	  elapsed = difftime(stop_time, start_time);
+	  secsToAdd += elapsed;
+	  printf("Clock's ticking!\n");
 	}
 	printf("\n");
       }
