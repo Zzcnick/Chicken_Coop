@@ -98,8 +98,9 @@ int main() {
       else {
 	printf("\n");
 	if (parse(&duck, input) == 0) {
-	  diff = clock() - start;	  
-	  printf("\nYou took %lu seconds!\n", diff);
+	  diff = clock() - start;
+	  double t = ((double)diff)/1000;
+	  printf("\nYou took %lf seconds!\n", t);
 	}
 	printf("\n");
       }
