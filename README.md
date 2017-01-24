@@ -31,6 +31,4 @@
 * The average time it takes you per Set is your score for the game. Your username and score will be saved in a text file, the contents of which will be printed out for you to see immediately after having finished your game.
 
 #### Multi-Player
-*
-*
-*
+* Zicheng pls
