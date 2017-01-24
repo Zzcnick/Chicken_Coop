@@ -12,7 +12,6 @@
 * highscore.h, highscore.c
 * setserver.h, setserver.h
 * makefile
-* set2.c??
 
 ### Instructions
 * Zicheng put compiling/running instructions here
