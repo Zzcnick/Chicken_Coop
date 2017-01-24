@@ -73,7 +73,7 @@ void remove_whitespace(char * buffer) {
 void send_client(int sd, char * buffer, char * message) {
   strcpy(buffer, message); 
   send(sd, buffer, BUFFER_SIZE, 0);
-  //printf("DEBUG: %s\n", buffer); // Debugging
+  printf("DEBUG: %s\n", buffer); // Debugging
 }
 
 int main() {    

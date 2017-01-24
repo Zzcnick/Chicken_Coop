@@ -17,8 +17,8 @@ int s_setup() {
   struct sockaddr_in sin;
   sin.sin_family = AF_INET;
 
-  inet_aton( "149.89.150.103" , &(sin.sin_addr) );
-  //sin.sin_addr.s_addr = INADDR_ANY;
+  //inet_aton( "149.89.150.103" , &(sin.sin_addr) );
+  sin.sin_addr.s_addr = INADDR_ANY;
   sin.sin_port = htons(5375);
     
   bind( sd, (struct sockaddr *)&sin, sizeof(sin) );
