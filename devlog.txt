@@ -91,3 +91,7 @@ zichengZ -- 2017-01-23 16:53
   - Use select to solicit input from stdin and server on both sides
   - Verify connection between server and client exists on localhost
 - Begin implementation of setserver into set client
+
+sarahY -- 2017-01-23 11:50PM
+- Did most of README
+- I'm going to dip but power to ya Zeech :')
