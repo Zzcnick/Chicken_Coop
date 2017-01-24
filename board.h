@@ -37,7 +37,9 @@ int check_attr_nums(int a, int b, int c); // DONE
 int check_set(card c1, card c2, card c3); //DONE
 int remove_set(deck * d, int index1, int index2, int index3); //DONE
 void print_card(card c); //DONE
+void write_card(char * buffer, card c); // DONE
 void swap(deck * d, int i1, int i3); //DONE
 void display(deck d); //DONE
+void write_display(char * buffer, deck d); // DONE
 int set_exists(deck d); 
 #endif

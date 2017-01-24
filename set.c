@@ -7,6 +7,7 @@
 #include <time.h>
 #include <string.h>    
 #include <unistd.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -14,6 +15,23 @@
 #include "highscore.h"
 #include "board.h"
 #include "setserver.h"
+
+#define BUFFER_SIZE 4096
+
+// Instance Variables... sort of...
+int MASTER_HOST = -1;
+int MASTER_SERVER = -1;
+
+static void sighandler(int signo) {
+  if (signo == SIGINT)
+    { // ^C (signal 2)
+      if (MASTER_HOST > 0)
+	close(MASTER_HOST);
+      if (MASTER_SERVER > 0)
+	close(MASTER_SERVER);
+      exit(0);
+    }
+}
 
 int parse(deck * d, char * input) {
   int r1, r2, r3;
@@ -40,7 +58,7 @@ int parse(deck * d, char * input) {
   }
 }
 
-char * remove_whitespace(char * buffer) {
+void remove_whitespace(char * buffer) {
   int l = strlen(buffer);
   int i;
   for (i = 0; i < l; i++) {
@@ -52,14 +70,22 @@ char * remove_whitespace(char * buffer) {
   }
 }
 
+void send_client(int sd, char * buffer, char * message) {
+  strcpy(buffer, message); 
+  send(sd, buffer, BUFFER_SIZE, 0);
+  //printf("DEBUG: %s\n", buffer); // Debugging
+}
+
 int main() {    
+  signal(SIGINT, sighandler);
+
   system("clear");
   srand(time(0));
   printf("Set 2.0\n");
   printf("By Sarah Yoon and Zicheng Zhen\n\n");
 
   printf("Input username: ");
-  char user[1000];
+  char user[128];
   fgets(user, sizeof(user), stdin);
   *strchr(user, '\n') = 0;
   printf("===============================\n");
@@ -82,6 +108,7 @@ int main() {
     int index = 0;
     
     while (duck.removed > 0) {      
+
       while (duck.removed-duck.dealt < 9) {
 	deal(&duck);
       }
@@ -146,10 +173,14 @@ int main() {
     printf("You have selected multiplayer!\n");
     printf("Are you hosting or joining a room?\n\t1. Hosting\n\t2. Joining\n\nEnter a choice: ");
     
-    char rbuffer[128];
-    char wbuffer[128];
+    char rbuffer[BUFFER_SIZE];
+    char wbuffer[BUFFER_SIZE];
     fd_set fds;
     int max_sd;
+    int result;
+    int hostscore = 0, serverscore = 0;
+    int guesser; // 0 - server, 1 - client
+    char hostname[128]; // username of host
 
     while (1) {
       fgets(mode, sizeof(mode), stdin);
@@ -171,36 +202,116 @@ int main() {
 	  printf("Incoming connection received. Game starting!\n");
 	}
 	max_sd = host;
-	
+	MASTER_HOST = host;
+	recv(host, hostname, 128, 0); // Receive hostname
+
 	// GAME SETUP
 	deck swan;
 	populate(&swan);
 	shuffle(&swan);
 
 	// SELECT LOOP
-	while (swan.removed > 0) {
+	while (swan.removed > 75) { // CHANGE THIS LATER
 
+	  wbuffer[0] = 0; // Clear Buffer
 
-	  while (host > 0) {
+	  while (swan.removed - swan.dealt < 9) {
+	    deal(&swan);
+	  }
+	  display(swan);
+	  write_display(wbuffer, swan);
+	  send(host, wbuffer, sizeof(wbuffer), 0);
+
+	  while (set_exists(swan) == -1 && swan.dealt > 0) {
+	    printf("No sets on the table! Dealing...\n"); 
+	    send_client(host, wbuffer, "No sets on the table! Dealing...\n"); 
+	    deal(&swan);
+	    display(swan);
+	    write_display(wbuffer, swan);
+	    send(host, wbuffer, sizeof(wbuffer), 0);
+	  }
+	  
+	  if (set_exists(swan) == -1 && swan.dealt == 0) {
+	    break; // Exit to End Condition
+	  }
+
+	  printf("Please enter a Set.\n%s: ", user);
+	  sprintf(wbuffer, "Please enter a Set.\n%s: ", hostname);
+	  send(host, wbuffer, sizeof(wbuffer), 0);
+	  fflush(stdout); // Flush Buffer
+
+	  wbuffer[0] = 0; // Clear Buffer
+	  
+	  if (host > 0) {
 	    FD_ZERO(&fds);
 	    FD_SET(STDIN, &fds);
 	    FD_SET(host, &fds);
 	    select(max_sd + 1, &fds, NULL, NULL, NULL);
 
 	    if (FD_ISSET(STDIN, &fds)) {
-	      printf("[SERVER STDIN] ");
+	      //printf("[SERVER STDIN] "); // Debugging
 	      fgets(rbuffer, sizeof(rbuffer), stdin);
-	      printf("%s\n", rbuffer);
+	      *strchr(rbuffer, '\n') = 0;
+	      if (strcmp(rbuffer, "exit") == 0) { exit(0); }
+	      else {
+		result = parse(&swan, rbuffer);
+		guesser = 0;
+	      }
+	      //printf("DEBUGGING:\n%s\n", wbuffer); // Debugging
+	      //printf("%s\n", rbuffer); // Debugging
 	    }
 	    if (FD_ISSET(host, &fds)) {
 	      recv(host, rbuffer, sizeof(rbuffer), 0);
-	      printf("[CLIENT %d] %s\n", host, rbuffer);
-	      strcpy(wbuffer, "Received: ");
-	      strcat(wbuffer, rbuffer);
-	      send(host, wbuffer, sizeof(wbuffer), 0);
+	      *strchr(rbuffer, '\n') = 0;
+	      if (strcmp(rbuffer, "exit") == 0) { exit(0); }
+	      else {
+		result = parse(&swan, rbuffer);
+		guesser = 1;
+	      }
+	      //send(host, rbuffer, sizeof(rbuffer), 0); // Debugging
+	      //printf("[CLIENT %d] %s\n", host, rbuffer); // Debugging
 	    }
 	  }
+	  
+	  printf("\e[1;1H\e[2J\n"); // Clear Screen
+	  send_client(host, wbuffer, "\e[1;1H\e[2J\n"); // Clear Client
+	  
+	  if (result == 0) { // Success
+	    if (guesser == 0) { // Server
+	      printf("A set has been found by %s!\n", user);
+	      sprintf(wbuffer, "A set has been found by %s!\n", user);
+	      send(host, wbuffer, sizeof(wbuffer), 0);
+	      serverscore++;
+	    } else { // Client
+	      printf("A set has been found by %s!\n", hostname);
+	      sprintf(wbuffer, "A set has been found by %s!\n", hostname);
+	      send(host, wbuffer, sizeof(wbuffer), 0);
+	      hostscore++;
+	    }
+	  } else  { // Failure
+	    if (guesser == 0) { // Server
+	      printf("%s guessed, and failed!\n", user);
+	      sprintf(wbuffer, "%s guessed, and failed!\n", user);
+	      send(host, wbuffer, sizeof(wbuffer), 0);
+	    } else { // Client
+	      printf("%s guessed, and failed!\n", hostname);
+	      sprintf(wbuffer, "%s guessed, and failed!\n", hostname);
+	      send(host, wbuffer, sizeof(wbuffer), 0);
+	    }
+	  }	    
 	}
+	// END GAME
+	printf("Game finished!\n");
+	send_client(host, wbuffer, "Game finished!\n");
+	printf("Final Scores:\n%s: %d\n%s: %d\n",
+	       user, serverscore, hostname, hostscore);
+	sprintf(wbuffer,
+		"Final Scores:\n%s: %d\n%s: %d\n",
+		user, serverscore, hostname, hostscore);
+	send(host, wbuffer, sizeof(wbuffer), 0);
+	strcpy(wbuffer, "exit");
+	send(host, wbuffer, sizeof(wbuffer), 0);
+	return 0; // IMPLEMENT SCORES HERE
       }
       // END SERVER CODE ==========================
 
@@ -211,6 +322,8 @@ int main() {
 	if (sd < 0) {
 	  printf("Error joining; aborting.\n");
 	}
+	send(sd, user, 128, 0); // Sending username to server.
+	MASTER_HOST = sd;
 
 	// SELECT LOOP
 	while (sd > 0) {
@@ -221,11 +334,18 @@ int main() {
 	  
 	  if (FD_ISSET(STDIN, &fds)) {
 	    fgets(rbuffer, sizeof(rbuffer), stdin);
+	    if (strcmp(rbuffer, "exit") == 0) {
+	      return 0;
+	    }
 	    send(sd, rbuffer, sizeof(rbuffer), 0);
 	  }
 	  if (FD_ISSET(sd, &fds)) {
 	    recv(sd, rbuffer, sizeof(rbuffer), 0);
-	    printf("[SERVER] %s\n", rbuffer);
+	    if (strcmp(rbuffer, "exit") == 0) {
+	      return 0;
+	    }
+	    printf("%s", rbuffer); // Debugging
+	    fflush(stdout); // Printing Name
 	  }
 	}
       }

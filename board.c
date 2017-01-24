@@ -18,6 +18,16 @@ void print_card(card c) {
   printf("%s\t", WHT);
 }
 
+void write_card(char * buffer, card c) {
+  sprintf(buffer + strlen(buffer), "%s", c.color);
+  sprintf(buffer + strlen(buffer), "%c", c.shading[0]);
+  int i;
+  for (i = 0; i < c.number; i++)
+    sprintf(buffer + strlen(buffer), "%s", c.shape);
+  sprintf(buffer + strlen(buffer), "%c", c.shading[1]);
+  sprintf(buffer + strlen(buffer), "%s\t", WHT);
+}
+
 int deal(deck * d) {
   if (d->removed - d->dealt < 21) {
     if (d->dealt == 0) {
@@ -58,6 +68,25 @@ void display(deck d) {
     }
   }
   printf("\n");
+}
+
+void write_display(char * buffer, deck d) {
+  sprintf(buffer, "\t0\t1\t2\n");
+  int i;
+  char alphabet[7] = "ABCDEFG";
+  int a=0;
+  for (i = d.dealt; i < d.removed; i++ ) {
+    if (i%3 == 0) {
+      sprintf(buffer + strlen(buffer), "%c\t", alphabet[a]);
+      a++;
+    }
+    write_card(buffer, d.order[i]);
+    if (i%3 == 2) {
+      sprintf(buffer + strlen(buffer), "\n");
+    }
+  }
+  sprintf(buffer + strlen(buffer), "\n");
+  //printf("DEBUGGING:\n%s\n", buffer); // Debugging
 }
 
 int populate(deck * d) {
@@ -134,7 +163,7 @@ int set_exists(deck d) {
     for (j=i+1; j<size-1; j++) {
       for (k=i+2; k<size; k++) {
 	if (check_set(board[i], board[j], board[k])) {
-	  printf("%d, %d, %d\n", i, j, k);
+	  printf("%d, %d, %d\n", i, j, k); // Debugging
 	  return 0;
 	}
       }
