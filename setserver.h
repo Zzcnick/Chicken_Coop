@@ -2,10 +2,11 @@
 #define SET_SERVER
 
 #define INPUT_BUFFER_SIZE 128
+#define STDIN STDIN_FILENO
+#define STDOUT STDOUT_FILENO     
 
-int server_setup();
-int server_connect();
-
-int client_connect();
+int s_setup();
+int s_connect();
+int c_connect();
 
 #endif

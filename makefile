@@ -1,19 +1,19 @@
 GCC = gcc -g
 
-all: board.o set.o highscore.o
-	$(GCC) board.o set.o highscore.o -o stest.out
+all: board.o set.o highscore.o setserver.o
+	$(GCC) board.o set.o highscore.o setserver.o -o set.out
+
+set.o: set.c board.c highscore.o
+	$(GCC) -c set.c
 
 board.o: board.c board.h
 	$(GCC) -c board.c
 
-set.o: set.c board.c highscore.c
-	$(GCC) -c set.c
-
 highscore.o: highscore.c highscore.h
 	$(GCC) -c highscore.c
 
-setserver: setserver.c setserver.h
-	$(GCC) setserver.c -o server.out
+setserver.o: setserver.c setserver.h
+	$(GCC) -c setserver.c
 
 clean:
 	rm *.o *~ *.out

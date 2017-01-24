@@ -2,14 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
-#define STDIN STDIN_FILENO
-#define STDOUT STDOUT_FILENO
+#include "setserver.h"
 
 int s_setup() {
   int sd = -1; // Socket Descriptor
@@ -32,7 +29,7 @@ int s_connect(int sd) {
   int connection = -1;
   if (listen(sd, 1))
     return -1; // Error
-  printf("Server listening...\n");
+  printf("Waiting for incoming connection...\n");
 
   struct sockaddr_in sin;
   unsigned int sin_size = sizeof(sin);
@@ -41,25 +38,28 @@ int s_connect(int sd) {
   if (connection == -1)
     return connection;
   
-  printf("Successfully connected to [%d]!\n", connection);
+  // printf("Successfully connected to [%d]!\n", connection); // Debugging
   return connection;
 }
 
-int parse(char * buffer) {
-  if (strcmp(buffer, "add") == 0) {
-    printf("[SERVER] Adding connection...\n");
+int c_connect() {
+  int sd = -1;
+  sd = socket( AF_INET, SOCK_STREAM, 0 );
 
-    int sd;
-    sd = s_setup();
-    if (sd > -1) 
-      printf("Socket successfully created!\n");
-    sd = s_connect(sd);
+  struct sockaddr_in sin;
+  sin.sin_family = AF_INET;
+  inet_aton( "127.0.0.1", &(sin.sin_addr) );
+  sin.sin_port = htons(5375);
 
-    return sd;
+  if (connect( sd, (struct sockaddr *)&sin, sizeof(sin))) {
+    printf("Something went wrong...\n");
+    return -1;
   }
-  return -1;
+
+  return sd;
 }
 
+/*
 int main() {
   char rbuffer[128]; // Reading From Clients
   char wbuffer[128]; // Writing To Clients
@@ -116,7 +116,7 @@ int main() {
   
   return 0;
 }
-
+*/
 
 /*
 int main() {
