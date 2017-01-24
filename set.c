@@ -78,10 +78,10 @@ int main() {
     populate(&duck);
     shuffle(&duck);
     int secsToAdd = 0;
-    int times[3];
+    int times[27];
     int index = 0;
     
-    while (duck.removed > 72) {      
+    while (duck.removed > 0) {      
       while (duck.removed-duck.dealt < 9) {
 	deal(&duck);
       }
@@ -125,10 +125,10 @@ int main() {
       }
     }
     double score;
-    for (index=0; index<3; index++) {
+    for (index=0; index<27; index++) {
       score += (double)times[index];
     }
-    score = score/3;
+    score = score/27;
     printf("Thanks for playing! On average you took %lf seconds per Set.\n", score);
 
     playerscore * list = read_scores("h.txt");
