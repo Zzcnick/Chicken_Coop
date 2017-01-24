@@ -92,6 +92,14 @@ zichengZ -- 2017-01-23 16:53
   - Verify connection between server and client exists on localhost
 - Begin implementation of setserver into set client
 
-sarahY -- 2017-01-23 11:50PM
+sarahY -- 2017-01-23 23:50
 - Did most of README
 - I'm going to dip but power to ya Zeech :')
+
+zichengZ -- 2017-01-24 02:27
+- Continue work on README
+  - Add multiplayer instructions
+- Add networking across multiple computers
+- Add networking on a local host
+  - Finish infrastructure used to broadcast server's contents to clients
+- Complete project!
