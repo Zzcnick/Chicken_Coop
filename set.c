@@ -178,7 +178,7 @@ int main() {
 	shuffle(&swan);
 
 	// SELECT LOOP
-	while (duck.removed > 0) {
+	while (swan.removed > 0) {
 
 
 	  while (host > 0) {
