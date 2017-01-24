@@ -163,7 +163,7 @@ int set_exists(deck d) {
     for (j=i+1; j<size-1; j++) {
       for (k=i+2; k<size; k++) {
 	if (check_set(board[i], board[j], board[k])) {
-	  printf("%d, %d, %d\n", i, j, k); // Debugging
+	  //printf("%d, %d, %d\n", i, j, k); // Debugging
 	  return 0;
 	}
       }

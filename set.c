@@ -181,6 +181,7 @@ int main() {
     int hostscore = 0, serverscore = 0;
     int guesser; // 0 - server, 1 - client
     char hostname[128]; // username of host
+    char ip[32]; // IP Address - Client
 
     while (1) {
       fgets(mode, sizeof(mode), stdin);
@@ -211,7 +212,7 @@ int main() {
 	shuffle(&swan);
 
 	// SELECT LOOP
-	while (swan.removed > 75) { // CHANGE THIS LATER
+	while (swan.removed > 0) { // CHANGE THIS LATER
 
 	  wbuffer[0] = 0; // Clear Buffer
 
@@ -318,9 +319,14 @@ int main() {
       // CLIENT CODE ==============================
       else if (strcmp(mode, "2") == 0) { // Joining
 	printf("You are joining a server!\n");
-	int sd = c_connect();
+	printf("Please enter the IP address you are trying to connect to.\n");
+	fgets(ip, sizeof(ip), stdin);
+	*strchr(ip, '\n') = 0;
+	printf("IP entered: %s\n", ip); // Debugging
+	int sd = c_connect(ip);
 	if (sd < 0) {
 	  printf("Error joining; aborting.\n");
+	  return -1;
 	}
 	send(sd, user, 128, 0); // Sending username to server.
 	MASTER_HOST = sd;
