@@ -19,4 +19,4 @@ clean:
 	rm *.o *~ *.out
 
 run: all
-	./stest.out
+	./set.out
