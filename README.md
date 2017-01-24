@@ -22,7 +22,9 @@
 * The card's "number" (number of letters for that card) will either be 1, 2 or 3.
 * The card's "shape" is represented by the letter that appears either once, twice or thrice. It will either be O, X, or S.
 * The card's "color" will either be red, green, or blue, and the card will be printed in that color in terminal.
-* Whenever prompted to enter a set, enter the cards' coordinates in the following format (case-sensitive!): A0 B1 C2 
+* Whenever prompted to enter a set, enter the cards' coordinates in the following format (case-sensitive!): A0 B1 C2
+* A Set is defined as follows:
+  * For each of the four attributes (shading, number, shape, and color), the three cards are either all the same or all different.
 * When given the option to either play (1) Single Player or (2) Multi-Player...
 
 #### Single Player
